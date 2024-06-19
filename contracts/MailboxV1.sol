@@ -12,6 +12,11 @@ contract MailboxV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     event MessageSent(address indexed sender, string message);
     event MessageReceived(address indexed recipient, string message);
 
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
     function initialize() public initializer {
         __Ownable_init();
         version = 1;

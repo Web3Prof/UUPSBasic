@@ -75,4 +75,19 @@ describe("Mailbox Upgradeable", () => {
     it("should revert if initialized twice", async function () {
         await expect(mailboxProxy.initialize()).to.be.revertedWith("Initializable: contract is already initialized");
     });
+
+    it("should not be able to initialize directly", async function () {
+        mailboxProxyAddress = await mailboxProxy.getAddress();
+        implementationAddress = await upgrades.erc1967.getImplementationAddress(mailboxProxyAddress);
+
+        const ic = await ethers.getContractAt("MailboxV1", implementationAddress, messenger1);
+        await expect(ic.initialize()).to.be.revertedWith("Initializable: contract is already initialized");
+
+        // checks before implementing _disableInitializers()
+
+        // console.log(await ic.owner());
+        // console.log(await mailboxProxy.owner());
+
+
+    });
 });
